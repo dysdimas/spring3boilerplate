@@ -1,5 +1,6 @@
 package com.ey.springboot3security.service;
 
+import com.ey.springboot3security.entity.Response;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,9 +21,9 @@ public class JwtService {
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
     // Generate token with given user name
-    public String generateToken(String userName) {
+    public Response<String> generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userName);
+        return Response.success(createToken(claims,userName),"success");
     }
 
     // Create a JWT token with specified claims and subject (user name)

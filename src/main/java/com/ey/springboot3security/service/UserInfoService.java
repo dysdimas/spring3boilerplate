@@ -1,8 +1,11 @@
 package com.ey.springboot3security.service;
 
+import com.ey.springboot3security.entity.Response;
 import com.ey.springboot3security.entity.UserInfo;
 import com.ey.springboot3security.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,9 +31,12 @@ public class UserInfoService implements UserDetailsService {
                 .orElseThrow(()-> new UsernameNotFoundException("user not found : " + username));
     }
 
-    public String addUser(UserInfo userInfo){
+    public ResponseEntity<Response<String>> addUser(UserInfo userInfo){
+        if(userInfoRepository.findByEmail(userInfo.getEmail()).isPresent()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Response.error("user is exist", 403));
+        }
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         userInfoRepository.save(userInfo);
-        return "user add successfully";
+        return ResponseEntity.status(HttpStatus.OK).body(Response.success(null,"success"));
     }
 }
