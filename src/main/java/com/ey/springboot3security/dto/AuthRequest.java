@@ -1,4 +1,4 @@
-package com.ey.springboot3security.entity;
+package com.ey.springboot3security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,10 @@ public class UserInfoService implements UserDetailsService {
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         userInfoRepository.save(userInfo);
         return ResponseEntity.status(HttpStatus.OK).body(Response.success(null,"success"));
+    }
+
+    public ResponseEntity<Response<List<UserInfo>>> findAll(){
+        List<UserInfo> userList = userInfoRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(Response.success(userList,"success"));
     }
 }
